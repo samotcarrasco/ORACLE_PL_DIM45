@@ -14,6 +14,7 @@ CREATE OR REPLACE PACKAGE BiblioTK AS
 END BiblioTK;
 /
 
+
 CREATE OR REPLACE PACKAGE BODY BiblioTK AS
 
 -- 08. El alta de obras se implementará mediante una función alta_obra.

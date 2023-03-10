@@ -12,6 +12,7 @@ IMPORTANTE: IR EJECUTANDO PASO A PASO Y COMPRAR CON SELECT LOS RESULTADOS
 -- 08. El alta de obras se implementará mediante una función alta_obra.
 
 
+
 DECLARE
   v_id CHAR(5);
 BEGIN   
