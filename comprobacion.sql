@@ -20,11 +20,11 @@ select * from obra;
 DECLARE
   v_resultado INTEGER;
 BEGIN   
-  v_resultado := bibliotk.borrado_obra('RGEU5');
+  v_resultado := bibliotk.borrado_obra('47AUH');
  IF v_resultado = 1 THEN
     dbms_output.put_line('La obra se ha borrado correctamente');
   ELSE
-    dbms_output.put_line('La obra no existe y no se ha podido borrar');
+    dbms_output.put_line('La obra no existe o no se ha podido borrar');
   END IF;
 END;
 /
@@ -44,6 +44,18 @@ BEGIN
 END;
 /
 
+-- ejercicio 11
+DECLARE
+  v_resultado INTEGER;
+BEGIN   
+  v_resultado := bibliotk.borrado_autor('09TX');
+ IF v_resultado = 1 THEN
+    dbms_output.put_line('El autor se ha borrado correctamente');
+  ELSE
+    dbms_output.put_line('El autor no existe o no se ha podido borrar');
+  END IF;
+END;
+/
 
 select * from autor;
 select * from obra;
@@ -61,6 +73,21 @@ BEGIN
 END;
 /
 
+
+
+select * from autor_obra;
+--13. La desvinculación de un autor de una obra se implementará mediante una función desvincular.
+DECLARE
+  v_resultado INTEGER;
+BEGIN   
+  v_resultado := bibliotk.desvincular('GX8S','AX87N');
+ IF v_resultado = 1 THEN
+    dbms_output.put_line('El autor y la obra se han desvinculado');
+  ELSE
+    dbms_output.put_line('No se han podido desvincular');
+  END IF;
+END;
+/
 
 
 select * from autor;

@@ -4,6 +4,8 @@ CREATE OR REPLACE PACKAGE BiblioTK AS
   FUNCTION alta_autor(p_nombre VARCHAR, p_apellidos VARCHAR, p_nacimiento DATE DEFAULT NULL) RETURN VARCHAR2;
   FUNCTION borrado_autor(p_id VARCHAR) RETURN INTEGER;
   FUNCTION vincular(p_id_autor VARCHAR, p_id_obra VARCHAR) RETURN INTEGER;
+  FUNCTION desvincular(p_id_autor VARCHAR, p_id_obra VARCHAR) RETURN INTEGER;
+
 
 END BiblioTK;
 /
@@ -40,16 +42,13 @@ FUNCTION borrado_obra(p_id VARCHAR)
   v_resultado INTEGER;
  BEGIN
     v_resultado := 0;
-    -- Comprobar si existe la obra con el ID proporcionado
-    SELECT COUNT(*) INTO v_resultado FROM obra WHERE id = p_id;
-    -- Si hay 1 o mas los borra(deberia haber solo 0 o 1 porque el PK)
-    IF v_resultado > 0 THEN
-        DELETE FROM obra WHERE id = p_id;
-        v_resultado := 1;
-    END IF;
+     DELETE FROM obra WHERE id = p_id;
+     IF SQL%FOUND THEN
+    v_resultado := 1;
+  END IF;
+  RETURN v_resultado;
     
-    -- Devolver el resultado del borrado (1 si se borra, 0 si no se encuentra el ID)
-    RETURN v_resultado;
+
  END;
 
 -- 10. El alta de autores se implementará mediante una función alta_autor.
@@ -82,16 +81,11 @@ FUNCTION borrado_autor(p_id VARCHAR)
   v_resultado INTEGER;
  BEGIN
     v_resultado := 0;
-    -- Comprobar si existe el autor con el ID proporcionado
-    SELECT COUNT(*) INTO v_resultado FROM autor WHERE id = p_id;
-    -- Si hay 1 o mas los borra(deberia haber solo 0 o 1 porque el PK)º
-    IF v_resultado > 0 THEN
-        DELETE FROM autor WHERE id = p_id;
+       DELETE FROM autor WHERE id = p_id;
+        IF SQL%FOUND THEN
         v_resultado := 1;
     END IF;
-    
-    -- Devolver el resultado del borrado (1 si se borra, 0 si no se encuentra el ID)
-    RETURN v_resultado;
+  RETURN v_resultado;    
  END;
  
  
@@ -111,7 +105,30 @@ BEGIN
   RETURN v_resultado;
 END;
 
+
+--13. La desvinculación de un autor de una obra se implementará mediante una función desvincular.
+-------------------------------------------------------------------------------
+-- efectos: desvincula un autor de una obra
+-- retorno: 1 si desvinculación efectuada, 0 si no existe vínculo
+-------------------------------------------------------------------------------
+
+FUNCTION desvincular(p_id_autor VARCHAR, p_id_obra VARCHAR)
+RETURN INTEGER IS
+  v_resultado INTEGER := 0;
+BEGIN
+  DELETE FROM autor_obra WHERE id_autor = p_id_autor AND id_obra = p_id_obra;
+  IF SQL%FOUND THEN
+    v_resultado := 1;
+  END IF;
+  RETURN v_resultado;
+END;
+
+
+
+
 END BiblioTK;
+ 
+ 
  
  /
  
